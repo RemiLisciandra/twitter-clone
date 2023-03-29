@@ -8,18 +8,18 @@ import SidebarTweetButton from "./SidebarTweetButton";
 const Sidebar = () => {
     const items = [
         {
-            label: 'Home',
-            href: '/',
+            label: 'Accueil',
+            path: '/',
             icon: BsHouseFill
         },
         {
             label: 'Notifications',
-            href: '/notifications',
+            path: '/notifications',
             icon: BsBellFill
         },
         {
-            label: 'Profile',
-            href: '/users/123',
+            label: 'Profil',
+            path: '/utilisateurs/1',
             icon: FaUser
         }
     ];
@@ -29,8 +29,8 @@ const Sidebar = () => {
                 <div className="space-y-2 lg:w-[230px]">
                     <SidebarLogo></SidebarLogo>
                     {items.map((item) => (
-                    <SidebarItem key={item.href} href={item.href} label={item.label} icon={item.icon}/>))}
-                    <SidebarItem label="Logout" icon={BiLogOut} onClick={() => {}}></SidebarItem>
+                    <SidebarItem key={item.path} path={item.path} label={item.label} icon={item.icon}/>))}
+                    <SidebarItem label="Déconnexion" icon={BiLogOut} onClick={() => {}}></SidebarItem>
                     <SidebarTweetButton></SidebarTweetButton>
                 </div>
             </div>
