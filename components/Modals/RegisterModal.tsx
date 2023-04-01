@@ -71,9 +71,9 @@ const RegisterModal = () => {
 
     const footerContent = (
         <div className="text-neutral-400 text-center mt-4">
-            <p>Vous avez déjà un compte ?
+            <p>{"Vous avez déjà un compte ? "}
                 <span className="text-white cursor-pointer hover:underline" onClick={onToggle}
-                > Se connecter
+                >{"Se connecter"}
                 </span>
             </p>
         </div>

@@ -50,9 +50,9 @@ const LoginModal = () => {
 
     const footerContent = (
         <div className="text-neutral-400 text-center mt-4">
-            <p>{"Vous n'avez pas de compte ?"}
+            <p>{"Vous n'avez pas de compte ? "}
                 <span className="text-white cursor-pointer hover:underline" onClick={onToggle}
-                > {"S'inscrire"}
+                >{"S'inscrire"}
                 </span>
             </p>
         </div>
