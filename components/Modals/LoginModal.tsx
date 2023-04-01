@@ -14,7 +14,7 @@ const LoginModal = () => {
 
     const onToggle = useCallback(() => {
         if (isLoading) {
-            return null;
+            return;
         }
         loginModal.onClose();
         registerModal.onOpen();
@@ -25,7 +25,7 @@ const LoginModal = () => {
             setIsLoading(true);
             loginModal.onClose();
         } catch (error) {
-            console.log(error);
+            console.log("Erreur : " + error);
         } finally {
             setIsLoading(false);
         }

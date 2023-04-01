@@ -6,7 +6,7 @@ import Modal from '../Modal';
 
 const RegisterModal = () => {
     const registerModal = useRegisterModal();
-    const loginModal = useLoginModal()
+    const loginModal = useLoginModal();
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -17,7 +17,7 @@ const RegisterModal = () => {
 
     const onToggle = useCallback(() => {
         if (isLoading) {
-            return null;
+            return;
         }
         registerModal.onClose();
         loginModal.onOpen();
@@ -28,7 +28,7 @@ const RegisterModal = () => {
             setIsLoading(true);
             registerModal.onClose();
         } catch (error) {
-            console.log(error);
+            console.log("Erreur : " + error);
         } finally {
             setIsLoading(false);
         }
