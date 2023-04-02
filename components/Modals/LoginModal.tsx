@@ -60,16 +60,18 @@ const LoginModal = () => {
         </div>
     );
 
-    return <Modal
-        disabled={isLoading}
-        isOpen={loginModal.isOpen}
-        title={"Se connecter"}
-        actionLabel={"Connexion"}
-        onClose={loginModal.onClose}
-        onSubmit={onSubmit}
-        body={bodyContent}
-        footer={footerContent}
-    />
-}
+    return (
+        <Modal
+            disabled={isLoading}
+            isOpen={loginModal.isOpen}
+            title={"Se connecter"}
+            actionLabel={"Connexion"}
+            onClose={loginModal.onClose}
+            onSubmit={onSubmit}
+            body={bodyContent}
+            footer={footerContent}
+        />
+    );
+};
 
 export default LoginModal;

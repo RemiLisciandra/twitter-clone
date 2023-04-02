@@ -9,7 +9,7 @@ const SidebarLogo = () => {
             onClick={() => router.push('/')}>
             <BsTwitter size={28} color="white"></BsTwitter>
         </div>
-    )
-}
+    );
+};
 
 export default SidebarLogo;

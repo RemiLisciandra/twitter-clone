@@ -7,9 +7,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
 
     try {
-        const {currentUser} = await server(req);
-        return res.status(200).json(currentUser);
+        const {existingUser} = await server(req);
+        return res.status(200).json(existingUser);
     } catch (error) {
         console.log("Erreur : " + error);
+        return res.status(400).end();
     }
 }

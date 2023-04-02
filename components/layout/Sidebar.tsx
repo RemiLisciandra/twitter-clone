@@ -6,8 +6,11 @@ import SidebarLogo from "./SidebarLogo";
 import SidebarItem from "./SidebarItem";
 import SidebarTweetButton from "./SidebarTweetButton";
 import { useRouter } from "next/router";
+import useExistingUser from "../../hooks/useExistingUser";
+import {signOut} from "next-auth/react";
 
 const Sidebar = () => {
+    const {data : existingUser} = useExistingUser();
     const items = [
         {
             label: "Accueil",
@@ -44,11 +47,7 @@ const Sidebar = () => {
                             onClick={() => router.push(item.path)}
                         />
                     ))}
-                    <SidebarItem
-                        label="Déconnexion"
-                        icon={BiLogOut}
-                        onClick={() => {}}
-                    ></SidebarItem>
+                    {existingUser && <SidebarItem onClick={() => signOut()} icon={BiLogOut} label="Déconnexion" />}
                     <SidebarTweetButton></SidebarTweetButton>
                 </div>
             </div>
