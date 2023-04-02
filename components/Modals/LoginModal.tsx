@@ -14,7 +14,7 @@ const LoginModal = () => {
 
     const onToggle = useCallback(() => {
         if (isLoading) {
-            return;
+            return null;
         }
         loginModal.onClose();
         registerModal.onOpen();
@@ -34,12 +34,14 @@ const LoginModal = () => {
     const bodyContent = (
         <div className="flex flex-col gap-4">
             <Input
+                type="email"
                 placeholder="Adresse mail"
                 onChange={(e) => setEmail(e.target.value)}
                 value={email}
                 disabled={isLoading}
             />
             <Input
+                type="password"
                 placeholder="Mot de passe"
                 onChange={(e) => setPassword(e.target.value)}
                 value={password}

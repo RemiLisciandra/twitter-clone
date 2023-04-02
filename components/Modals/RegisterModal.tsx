@@ -17,7 +17,7 @@ const RegisterModal = () => {
 
     const onToggle = useCallback(() => {
         if (isLoading) {
-            return;
+            return null;
         }
         registerModal.onClose();
         loginModal.onOpen();
@@ -37,30 +37,35 @@ const RegisterModal = () => {
     const bodyContent = (
         <div className="flex flex-col gap-4">
             <Input
+                type="text"
                 placeholder="Nom"
                 onChange={(e) => setLastname(e.target.value)}
                 value={lastname}
                 disabled={isLoading}
             />
             <Input
+                type="text"
                 placeholder="Prénom"
                 onChange={(e) => setFirstname(e.target.value)}
                 value={firstname}
                 disabled={isLoading}
             />
             <Input
+                type='text'
                 placeholder="Nom d'utilisateur"
                 onChange={(e) => setUsername(e.target.value)}
                 value={username}
                 disabled={isLoading}
             />
             <Input
+                type="email"
                 placeholder="Adresse mail"
                 onChange={(e) => setEmail(e.target.value)}
                 value={email}
                 disabled={isLoading}
             />
             <Input
+                type="password"
                 placeholder="Mot de passe"
                 onChange={(e) => setPassword(e.target.value)}
                 value={password}
