@@ -48,7 +48,7 @@ const Modal: React.FC<ModalProps> = ({isOpen, onClose, onSubmit, title, body, fo
                         <div className="relative p-10 flex-auto">
                             {body}
                         </div>
-                        <div className="flex flex-col gap-2 p-10">
+                        <div className="flex flex-col gap-2 p-5">
                             <Button
                                 disabled={disabled}
                                 label={actionLabel}

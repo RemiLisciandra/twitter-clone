@@ -6,8 +6,7 @@ interface InputProps {
     type?: string;
     disabled?: boolean;
     onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-    label?: String;
-    pattern?: string;
+    label?: string;
 }
 
 const Input: React.FC<InputProps> = (
@@ -17,8 +16,7 @@ const Input: React.FC<InputProps> = (
         type,
         disabled,
         onChange,
-        label,
-        pattern // Ajouter le regex à la décomposition des props
+        label
     }) => {
     return (
         <div className="w-full">
@@ -29,11 +27,10 @@ const Input: React.FC<InputProps> = (
                 value={value}
                 placeholder={placeholder}
                 type={type}
-                pattern={pattern}
                 className="
             w-full p-4 text-lg bg-black border-2 border-neutral-800 rounded-md outline-none text-white
             focus:border-sky-500 focus:border-2 transition disabled:bg-neutral-900 disabled:opacity-70 disabled:cursor-not-allowed
-            "
+            pr-10"
             />
         </div>
     );

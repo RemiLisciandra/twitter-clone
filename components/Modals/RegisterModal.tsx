@@ -6,6 +6,8 @@ import Modal from '../Modal';
 import axios from "axios";
 import toast from "react-hot-toast";
 import {signIn} from "next-auth/react";
+import {BsFillEyeFill} from 'react-icons/bs';
+import {BsFillEyeSlashFill} from 'react-icons/bs';
 
 const RegisterModal = () => {
     const registerModal = useRegisterModal();
@@ -16,6 +18,12 @@ const RegisterModal = () => {
     const [lastname, setLastname] = useState('');
     const [firstname, setFirstname] = useState('');
     const [username, setUsername] = useState('');
+    const [passwordVisible, setPasswordVisible] = useState(false);
+    const [stepLength, setStepLength] = useState(false);
+    const [stepDigit, setStepDigit] = useState(false);
+    const [stepUpper, setStepUpper] = useState(false);
+    const [stepLower, setStepLower] = useState(false);
+    const [stepSpecial, setStepSpecial] = useState(false);
 
     const onToggle = useCallback(() => {
         if (isLoading) {
@@ -26,6 +34,9 @@ const RegisterModal = () => {
     }, [isLoading, registerModal, loginModal]);
 
     const onSubmit = useCallback(async () => {
+        if (!validatePassword(password)) {
+            return;
+        }
         try {
             setIsLoading(true);
             await axios.post('/api/register', {
@@ -49,19 +60,43 @@ const RegisterModal = () => {
         }
     }, [registerModal, lastname, firstname, username, email, password]);
 
+    const capitalizeFirstLetter = (value: string) => {
+        return value.charAt(0).toUpperCase() + value.slice(1);
+    }
+
+    const togglePasswordVisibility = () => {
+        setPasswordVisible(!passwordVisible);
+    };
+
+    const validatePassword = (password: string) => {
+        const hasUpperCase = /[A-Z]/.test(password);
+        const hasLowerCase = /[a-z]/.test(password);
+        const hasDigit = /\d/.test(password);
+        const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+        const hasLength = password.length >= 8;
+
+        setStepDigit(hasDigit);
+        setStepUpper(hasUpperCase);
+        setStepLower(hasLowerCase);
+        setStepSpecial(hasSpecialChar);
+        setStepLength(hasLength);
+
+        return hasUpperCase && hasLowerCase && hasDigit && hasSpecialChar && hasLength;
+    };
+
     const bodyContent = (
         <div className="flex flex-col gap-4">
             <Input
                 type="text"
                 placeholder="NOM"
-                onChange={(e) => setLastname(e.target.value)}
+                onChange={(e) => setLastname(e.target.value.toUpperCase())}
                 value={lastname}
                 disabled={isLoading}
             />
             <Input
                 type="text"
                 placeholder="Prénom"
-                onChange={(e) => setFirstname(e.target.value)}
+                onChange={(e) => setFirstname(capitalizeFirstLetter(e.target.value))}
                 value={firstname}
                 disabled={isLoading}
             />
@@ -79,13 +114,53 @@ const RegisterModal = () => {
                 value={email}
                 disabled={isLoading}
             />
-            <Input
-                type="password"
-                placeholder="Mot de passe"
-                onChange={(e) => setPassword(e.target.value)}
-                value={password}
-                disabled={isLoading}
-            />
+            <div className="relative w-full">
+                <Input
+                    type={passwordVisible ? "text" : "password"}
+                    placeholder="Mot de passe"
+                    onChange={(e) => {
+                        setPassword(e.target.value);
+                        validatePassword(e.target.value);
+                    }}
+                    value={password}
+                    disabled={isLoading}
+                />
+                <button
+                    onClick={togglePasswordVisibility}
+                    className="absolute top-1/2 right-4 transform -translate-y-1/2 text-white cursor-pointer"
+                >
+                    {passwordVisible ? (
+                        <BsFillEyeFill size={20}/>
+                    ) : (
+                        <BsFillEyeSlashFill size={20}/>
+                    )}
+                </button>
+            </div>
+            <div className="flex flex-col items-center gap-4">
+                <h3 className="text-white font-semibold mb-2">Critères du mot de passe :</h3>
+                <div className="flex items-center gap-5 mt-2 justify-center">
+                    <div className="flex flex-col items-center">
+                        <div className={`w-11 h-3 ${stepUpper ? "bg-green-500" : "bg-red-500"} rounded`}></div>
+                        <p className={stepUpper ? "text-green-500" : "text-red-500"}>Majuscule</p>
+                    </div>
+                    <div className="flex flex-col items-center">
+                        <div className={`w-11 h-3 ${stepLower ? "bg-green-500" : "bg-red-500"} rounded`}></div>
+                        <p className={stepLower ? "text-green-500" : "text-red-500"}>Minuscule</p>
+                    </div>
+                    <div className="flex flex-col items-center">
+                        <div className={`w-11 h-3 ${stepDigit ? "bg-green-500" : "bg-red-500"} rounded`}></div>
+                        <p className={stepDigit ? "text-green-500" : "text-red-500"}>Chiffre</p>
+                    </div>
+                    <div className="flex flex-col items-center">
+                        <div className={`w-11 h-3 ${stepSpecial ? "bg-green-500" : "bg-red-500"} rounded`}></div>
+                        <p className={stepSpecial ? "text-green-500" : "text-red-500"}>Spécial</p>
+                    </div>
+                    <div className="flex flex-col items-center">
+                        <div className={`w-11 h-3 ${stepLength ? "bg-green-500" : "bg-red-500"} rounded`}></div>
+                        <p className={stepLength ? "text-green-500" : "text-red-500"}>8 caractères</p>
+                    </div>
+                </div>
+            </div>
         </div>
     );
 

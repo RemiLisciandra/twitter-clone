@@ -3,14 +3,15 @@ import useRegisterModal from "@/hooks/useRegisterModal";
 import {useCallback, useState} from "react";
 import Input from '../Input';
 import Modal from '../Modal'
+import {BsFillEyeFill, BsFillEyeSlashFill} from "react-icons/bs";
 
 const LoginModal = () => {
     const loginModal = useLoginModal();
     const registerModal = useRegisterModal();
-
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [isLoading, setIsLoading] = useState(false);
+    const [passwordVisible, setPasswordVisible] = useState(false);
 
     const onToggle = useCallback(() => {
         if (isLoading) {
@@ -31,6 +32,10 @@ const LoginModal = () => {
         }
     }, [loginModal]);
 
+    const togglePasswordVisibility = () => {
+        setPasswordVisible(!passwordVisible);
+    };
+
     const bodyContent = (
         <div className="flex flex-col gap-4">
             <Input
@@ -40,13 +45,25 @@ const LoginModal = () => {
                 value={email}
                 disabled={isLoading}
             />
-            <Input
-                type="password"
-                placeholder="Mot de passe"
-                onChange={(e) => setPassword(e.target.value)}
-                value={password}
-                disabled={isLoading}
-            />
+            <div className="relative w-full">
+                <Input
+                    type={passwordVisible ? "text" : "password"}
+                    placeholder="Mot de passe"
+                    onChange={(e) => setPassword(e.target.value)}
+                    value={password}
+                    disabled={isLoading}
+                />
+                <button
+                    onClick={togglePasswordVisibility}
+                    className="absolute top-1/2 right-4 transform -translate-y-1/2 text-white cursor-pointer"
+                >
+                    {passwordVisible ? (
+                        <BsFillEyeFill size={20}/>
+                    ) : (
+                        <BsFillEyeSlashFill size={20}/>
+                    )}
+                </button>
+            </div>
         </div>
     );
 
