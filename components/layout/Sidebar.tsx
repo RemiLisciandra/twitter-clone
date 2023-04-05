@@ -15,22 +15,21 @@ const Sidebar = () => {
         {
             label: "Accueil",
             path: "/",
-            icon: BsHouseFill,
+            icon: BsHouseFill
         },
         {
             label: "Notifications",
             path: "/notifications",
             icon: BsBellFill,
+            auth: true
         },
         {
             label: "Profil",
             path: "/utilisateur/1",
             icon: FaUser,
+            auth: true
         },
     ];
-
-    const router = useRouter();
-    const activePath = router.pathname;
 
     return (
         <div className="col-span-1 h-full pr-4 md:pr-6">
@@ -43,8 +42,7 @@ const Sidebar = () => {
                             path={item.path}
                             label={item.label}
                             icon={item.icon}
-                            active={item.path === activePath}
-                            onClick={() => router.push(item.path)}
+                            auth={item.auth}
                         />
                     ))}
                     {existingUser && <SidebarItem onClick={() => signOut()} icon={BiLogOut} label="Déconnexion" />}

@@ -1,28 +1,33 @@
 import React, {useCallback} from "react";
 import {IconType} from "react-icons";
 import {useRouter} from "next/router";
+import useExistingUser from "../../hooks/useExistingUser";
+import useLoginModal from "../../hooks/useLoginModal";
 
 interface SidebarItemProps {
     label: string;
     path?: string;
     icon: IconType;
     onClick?: () => void;
-    active?: boolean;
+    auth?: boolean;
 }
 
-const SidebarItem: React.FC<SidebarItemProps> = ({label, path, icon: Icon, onClick, active}) => {
-    const opacityClass = active ? "opacity-100" : "opacity-80";
+const SidebarItem: React.FC<SidebarItemProps> = ({label, path, icon: Icon, onClick, auth}) => {
+    const {data: existingUser} = useExistingUser();
+    const loginModal = useLoginModal();
     const router = useRouter();
     const handleClick = useCallback(() => {
         if (onClick) {
             return onClick();
         }
-        if (path) {
+        if (auth && !existingUser) {
+            loginModal.onOpen();
+        } else if (path) {
             router.push(path);
         }
-    }, [router, onClick, path]);
+    }, [router, onClick, path, existingUser, auth, loginModal]);
     return (
-        <div onClick={handleClick} className={`flex flex-row items-center ${opacityClass}`}>
+        <div onClick={handleClick} className={`flex flex-row items-center`}>
             <div
                 className="relative rounded-full h-14 w-14 flex items-center justify-center p-4 hover:bg-slate-300 hover:bg-opacity-10 cursor-pointer lg:hidden">
                 <Icon size={28} color="white"/>

@@ -4,6 +4,7 @@ import {useCallback, useState} from "react";
 import Input from '../Input';
 import Modal from '../Modal'
 import {BsFillEyeFill, BsFillEyeSlashFill} from "react-icons/bs";
+import {signIn} from "next-auth/react";
 
 const LoginModal = () => {
     const loginModal = useLoginModal();
@@ -24,13 +25,17 @@ const LoginModal = () => {
     const onSubmit = useCallback(async () => {
         try {
             setIsLoading(true);
+            await signIn('credentials', {
+                email,
+                password
+            });
             loginModal.onClose();
         } catch (error) {
             console.log("Erreur : " + error);
         } finally {
             setIsLoading(false);
         }
-    }, [loginModal]);
+    }, [loginModal, email, password]);
 
     const togglePasswordVisibility = () => {
         setPasswordVisible(!passwordVisible);
