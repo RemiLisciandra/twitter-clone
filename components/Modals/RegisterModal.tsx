@@ -24,6 +24,7 @@ const RegisterModal = () => {
     const [stepUpper, setStepUpper] = useState(false);
     const [stepLower, setStepLower] = useState(false);
     const [stepSpecial, setStepSpecial] = useState(false);
+    const emailRegex = /^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/;
 
     const onToggle = useCallback(() => {
         if (isLoading) {
@@ -34,8 +35,25 @@ const RegisterModal = () => {
     }, [isLoading, registerModal, loginModal]);
 
     const onSubmit = useCallback(async () => {
+        if (!lastname || lastname !== lastname.toUpperCase()) {
+            toast.error("Le nom est manquant ou invalide");
+            return null;
+        }
+        if (!firstname || firstname !== capitalizeFirstLetter(firstname)) {
+            toast.error("Le prénom est manquant ou invalide");
+            return null;
+        }
+        if (!username) {
+            toast.error("Le nom d'utilisateur est manquant ou invalide");
+            return null;
+        }
+        if (!email || !emailRegex.test(email)) {
+            toast.error("L'adresse mail est manquante ou invalide");
+            return null;
+        }
         if (!validatePassword(password)) {
-            return;
+            toast.error("Le mot de passe est manquant ou invalide");
+            return null;
         }
         try {
             setIsLoading(true);
@@ -46,19 +64,18 @@ const RegisterModal = () => {
                 email,
                 password
             });
-            toast.success('Votre compte a été créé !');
+            toast.success('Votre compte a été créé');
             await signIn('credentials', {
                 email,
                 password
             });
             registerModal.onClose();
         } catch (error) {
-            //console.log("Erreur : " + error);
             toast.error("Une erreur s'est produite lors de la création de votre compte");
         } finally {
             setIsLoading(false);
         }
-    }, [registerModal, lastname, firstname, username, email, password]);
+    }, [registerModal, lastname, firstname, username, email, password, emailRegex]);
 
     const capitalizeFirstLetter = (value: string) => {
         return value.charAt(0).toUpperCase() + value.slice(1);
@@ -127,12 +144,11 @@ const RegisterModal = () => {
                 />
                 <button
                     onClick={togglePasswordVisibility}
-                    className="absolute top-1/2 right-4 transform -translate-y-1/2 text-white cursor-pointer"
-                >
+                    className="absolute top-1/2 right-4 transform -translate-y-1/2 text-white cursor-pointer">
                     {passwordVisible ? (
-                        <BsFillEyeFill size={20}/>
-                    ) : (
                         <BsFillEyeSlashFill size={20}/>
+                    ) : (
+                        <BsFillEyeFill size={20}/>
                     )}
                 </button>
             </div>

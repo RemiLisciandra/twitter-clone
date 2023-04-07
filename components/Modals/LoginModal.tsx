@@ -5,6 +5,7 @@ import Input from '../Input';
 import Modal from '../Modal'
 import {BsFillEyeFill, BsFillEyeSlashFill} from "react-icons/bs";
 import {signIn} from "next-auth/react";
+import toast from "react-hot-toast";
 
 const LoginModal = () => {
     const loginModal = useLoginModal();
@@ -23,15 +24,28 @@ const LoginModal = () => {
     }, [isLoading, registerModal, loginModal]);
 
     const onSubmit = useCallback(async () => {
+        if (!email) {
+            toast.error("L'adresse mail est manquante");
+            return null;
+        }
+        if (!password) {
+            toast.error("Le mot de passe est manquant");
+            return null;
+        }
         try {
             setIsLoading(true);
-            await signIn('credentials', {
+            const result = await signIn('credentials', {
                 email,
-                password
+                password,
+                redirect: false
             });
-            loginModal.onClose();
+            if (result && result.error) {
+                toast.error("Les identifiants sont invalides");
+            } else {
+                loginModal.onClose();
+            }
         } catch (error) {
-            //console.log("Erreur : " + error);
+            toast.error("Une erreur s'est produite lors de la connexion");
         } finally {
             setIsLoading(false);
         }
@@ -60,8 +74,7 @@ const LoginModal = () => {
                 />
                 <button
                     onClick={togglePasswordVisibility}
-                    className="absolute top-1/2 right-4 transform -translate-y-1/2 text-white cursor-pointer"
-                >
+                    className="absolute top-1/2 right-4 transform -translate-y-1/2 text-white cursor-pointer">
                     {passwordVisible ? (
                         <BsFillEyeFill size={20}/>
                     ) : (

@@ -5,22 +5,18 @@ import {getServerSession} from 'next-auth';
 
 const server = async (req: NextApiRequest, res: NextApiResponse) => {
     const session = await getServerSession(req, res, authOptions);
-
     if (!session?.user?.email) {
-        throw new Error('Not signed in');
+        throw new Error('Aucune session trouvée ou email utilisateur non défini');
     }
-
-    const existingUser = await prisma.user.findUnique({
+    const authUser = await prisma.user.findUnique({
         where: {
             email: session.user.email,
         }
     });
-
-    if (!existingUser) {
-        throw new Error('Not signed in');
+    if (!authUser) {
+        throw new Error("L'utilisateur authentifié n'a pas été trouvé dans la base de données");
     }
-
-    return {existingUser};
+    return {authUser};
 };
 
 export default server;
