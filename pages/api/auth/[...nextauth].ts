@@ -1,22 +1,22 @@
 import bcrypt from "bcrypt"
-import NextAuth from "next-auth"
+import NextAuth, { AuthOptions } from "next-auth"
 import CredentialsProvider from "next-auth/providers/credentials"
 import { PrismaAdapter } from "@next-auth/prisma-adapter"
 
-import prisma from "@/libs/prisma"
+import prisma from "../../../libs/prisma"
 
-export default NextAuth({
+export const authOptions: AuthOptions = {
     adapter: PrismaAdapter(prisma),
     providers: [
         CredentialsProvider({
             name: 'credentials',
             credentials: {
-                email: { label: 'Adresse mail', type: 'text' },
-                password: { label: 'Mot de passe', type: 'password' }
+                email: { label: 'email', type: 'text' },
+                password: { label: 'password', type: 'password' }
             },
             async authorize(credentials) {
                 if (!credentials?.email || !credentials?.password) {
-                    throw new Error('Une adresse mail et un mot de passe est requis');
+                    throw new Error('Invalid credentials');
                 }
 
                 const user = await prisma.user.findUnique({
@@ -26,7 +26,7 @@ export default NextAuth({
                 });
 
                 if (!user || !user?.hashedPassword) {
-                    throw new Error('Utilisateur inexistant ou mot de passe pas disponible');
+                    throw new Error('');
                 }
 
                 const isCorrectPassword = await bcrypt.compare(
@@ -35,7 +35,7 @@ export default NextAuth({
                 );
 
                 if (!isCorrectPassword) {
-                    throw new Error('Le mot de passe est incorrect');
+                    throw new Error('Mot de passe incorrecte');
                 }
 
                 return user;
@@ -50,4 +50,6 @@ export default NextAuth({
         secret: process.env.NEXTAUTH_JWT_SECRET,
     },
     secret: process.env.NEXTAUTH_SECRET,
-});
+};
+
+export default NextAuth(authOptions);

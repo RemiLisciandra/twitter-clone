@@ -1,5 +1,6 @@
-import {NextApiRequest, NextApiResponse} from "next";
-import server from "../../libs/server";
+import { NextApiRequest, NextApiResponse } from 'next';
+
+import server from '../../libs/server';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
     if (req.method !== 'GET') {
@@ -7,10 +8,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
 
     try {
-        const {existingUser} = await server(req);
+        const { existingUser } = await server(req, res);
+
         return res.status(200).json(existingUser);
     } catch (error) {
-        console.log("Erreur : " + error);
+        console.log(error);
         return res.status(400).end();
     }
 }

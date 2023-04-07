@@ -1,22 +1,23 @@
-import {NextApiRequest} from "next";
-import {getSession} from "next-auth/react";
-import prisma from "../libs/prisma";
+import {NextApiRequest, NextApiResponse} from 'next';
 
-const server = async (req: NextApiRequest) => {
-    const session = await getSession({req});
+import prisma from '@/libs/prisma';
+import {authOptions} from '@/pages/api/auth/[...nextauth]';
+import {getServerSession} from 'next-auth';
+
+const server = async (req: NextApiRequest, res: NextApiResponse) => {
+    const session = await getServerSession(req, res, authOptions);
     if (!session?.user?.email) {
-        throw new Error("L'utilisateur n'est pas authentifié ou l'adresse e-mail est manquante");
+        throw new Error('Utilisateur non connecté');
     }
-
     const existingUser = await prisma.user.findUnique({
         where: {
-            email: session.user.email
+            email: session.user.email,
         }
     });
-
     if (!existingUser) {
-        throw new Error("L'adresse mail inexistante");
+        throw new Error('Utilisateur non connecté');
     }
+
     return {existingUser};
 };
 
