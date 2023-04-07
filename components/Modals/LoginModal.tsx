@@ -31,7 +31,7 @@ const LoginModal = () => {
             });
             loginModal.onClose();
         } catch (error) {
-            console.log("Erreur : " + error);
+            //console.log("Erreur : " + error);
         } finally {
             setIsLoading(false);
         }

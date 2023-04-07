@@ -53,7 +53,7 @@ const RegisterModal = () => {
             });
             registerModal.onClose();
         } catch (error) {
-            console.log("Erreur : " + error);
+            //console.log("Erreur : " + error);
             toast.error("Une erreur s'est produite lors de la création de votre compte");
         } finally {
             setIsLoading(false);
