@@ -1,7 +1,7 @@
 import userSWR from 'swr';
 import fetcher from "../libs/fetcher";
 
-const useAuthUser = () => {
+const useUserAuth= () => {
     const {data, error, isLoading, mutate} = userSWR('/api/authentication', fetcher);
     return {
         data,
@@ -11,4 +11,4 @@ const useAuthUser = () => {
     }
 };
 
-export default useAuthUser;
+export default useUserAuth;

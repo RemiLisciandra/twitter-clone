@@ -11,7 +11,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         if (!userId || typeof userId !== 'string') {
             throw new Error('Identifiant invalide');
         }
-        const authUser = await prisma.user.findUnique({
+        const userAuth = await prisma.user.findUnique({
             where: {
                 id: userId
             }
@@ -23,7 +23,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                 }
             }
         })
-        return res.status(200).json({ ...authUser, followersCount });
+        return res.status(200).json({ ...userAuth, followersCount });
     } catch (error) {
         return res.status(400).end();
     }

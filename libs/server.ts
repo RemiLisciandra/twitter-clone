@@ -8,15 +8,15 @@ const server = async (req: NextApiRequest, res: NextApiResponse) => {
     if (!session?.user?.email) {
         throw new Error('Aucune session trouvée ou email utilisateur non défini');
     }
-    const authUser = await prisma.user.findUnique({
+    const userAuth = await prisma.user.findUnique({
         where: {
             email: session.user.email,
         }
     });
-    if (!authUser) {
+    if (!userAuth) {
         throw new Error("L'utilisateur authentifié n'a pas été trouvé dans la base de données");
     }
-    return {authUser};
+    return {userAuth};
 };
 
 export default server;
