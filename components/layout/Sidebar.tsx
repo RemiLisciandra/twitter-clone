@@ -24,7 +24,7 @@ const Sidebar = () => {
         },
         {
             label: "Profil",
-            path: "/utilisateur/1",
+            path: `/utilisateurs/${userAuth?.id}`,
             icon: FaUser,
             auth: true
         },
