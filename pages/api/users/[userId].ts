@@ -9,7 +9,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         const { userId } = req.query;
 
         if (!userId || typeof userId !== 'string') {
-            throw new Error('Identifiant invalide');
+            return res.status(400).json({ error: "Identifiants invalides" });
         }
         const userAuth = await prisma.user.findUnique({
             where: {

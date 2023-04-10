@@ -8,15 +8,18 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
     try {
         const {lastname, firstname, username, email, password} = req.body;
+        if (!lastname || !firstname || !username || !email || !password) {
+            return res.status(400).json({ error: "Un des champs n'est pas renseigné" });
+        }
         if (lastname !== lastname.toUpperCase()) {
-            return res.status(400).json({ error: "Le nom de famille doit être en majuscules" });
+            return res.status(400).json({error: 'Le nom de famille doit être en majuscules'});
         }
         if (firstname.charAt(0) !== firstname.charAt(0).toUpperCase()) {
-            return res.status(400).json({ error: "La première lettre du prénom doit être en majuscules" });
+            return res.status(400).json({error: 'La première lettre du prénom doit être en majuscules'});
         }
         const emailRegex = /^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/;
         if (!emailRegex.test(email)) {
-            return res.status(400).json({ error: "L'adresse mail est invalide" });
+            return res.status(400).json({error: "L'adresse mail est invalide"});
         }
         const hashedPassword = await bcrypt.hash(password, 12);
         const user = await prisma.user.create({

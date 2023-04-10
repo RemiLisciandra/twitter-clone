@@ -6,7 +6,8 @@ import {getServerSession} from 'next-auth';
 const server = async (req: NextApiRequest, res: NextApiResponse) => {
     const session = await getServerSession(req, res, authOptions);
     if (!session?.user?.email) {
-        throw new Error('Aucune session trouvée ou email utilisateur non défini');
+        throw new Error();
+        // return res.status(400).json({ error: "Aucune session trouvée ou l'email de utilisateur est manquant" });
     }
     const userAuth = await prisma.user.findUnique({
         where: {
@@ -14,7 +15,8 @@ const server = async (req: NextApiRequest, res: NextApiResponse) => {
         }
     });
     if (!userAuth) {
-        throw new Error("L'utilisateur authentifié n'a pas été trouvé dans la base de données");
+        //return res.status(400).json({ error: "Echec de l'authentification" });
+        throw new Error();
     }
     return {userAuth};
 };
