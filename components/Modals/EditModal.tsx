@@ -6,6 +6,7 @@ import toast from "react-hot-toast";
 import axios from "axios";
 import Modal from '../Modal'
 import Input from "@/components/Input";
+import ImageUpload from "@/components/UploadImage";
 
 const EditModal = () => {
     const {data: userAuth} = useUserAuth();
@@ -17,7 +18,6 @@ const EditModal = () => {
     const [bio, setBio] = useState('');
     const [profileImage, setProfileImage] = useState('');
     const [coverImage, setCoverImage] = useState('');
-    const [stepLength, setStepLength] = useState(false);
 
     useEffect(() => {
         setLastname(userAuth?.lastname);
@@ -72,6 +72,8 @@ const EditModal = () => {
 
     const bodyContent = (
         <div className="flex flex-col gap-4">
+            <ImageUpload value={profileImage} disabled={isLoading} onChange={(image) => setProfileImage(image)} label="Enregistrement d'une photo de profil" />
+            <ImageUpload value={coverImage} disabled={isLoading} onChange={(image) => setCoverImage(image)} label="Enregistrement d'une image de couverture" />
             <Input
                 type="text"
                 placeholder="NOM"
@@ -107,7 +109,7 @@ const EditModal = () => {
         <Modal disabled={isLoading}
                isOpen={editModal.isOpen}
                title={"Modifier votre profil"}
-               actionLabel={"Sauvagarder"}
+               actionLabel={"Sauvegarder"}
                onClose={editModal.onClose}
                onSubmit={onSubmit}
                body={bodyContent}
