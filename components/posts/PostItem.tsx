@@ -3,7 +3,7 @@ import React, {useCallback, useMemo} from 'react';
 import {AiFillHeart, AiOutlineHeart, AiOutlineMessage} from 'react-icons/ai';
 import {formatDistanceToNowStrict} from 'date-fns';
 import useLoginModal from '../../hooks/useLoginModal';
-import useCurrentUser from '../../hooks/useUserAuth';
+import useUserAuth from '../../hooks/useUserAuth';
 import useLike from '../../hooks/useLike';
 import Avatar from '../Avatar';
 
@@ -16,7 +16,7 @@ const PostItem: React.FC<PostItemProps> = ({data = {}, userId}) => {
     const router = useRouter();
     const loginModal = useLoginModal();
 
-    const {data: currentUser} = useCurrentUser();
+    const {data: userAuth} = useUserAuth();
     const {hasLiked, toggleLike} = useLike({postId: data.id, userId});
 
     const goToUser = useCallback((ev: any) => {
@@ -31,12 +31,12 @@ const PostItem: React.FC<PostItemProps> = ({data = {}, userId}) => {
     const onLike = useCallback(async (ev: any) => {
         ev.stopPropagation();
 
-        if (!currentUser) {
+        if (!userAuth) {
             return loginModal.onOpen();
         }
 
         await toggleLike();
-    }, [loginModal, currentUser, toggleLike]);
+    }, [loginModal, userAuth, toggleLike]);
 
     const LikeIcon = hasLiked ? AiFillHeart : AiOutlineHeart;
 
@@ -57,7 +57,7 @@ const PostItem: React.FC<PostItemProps> = ({data = {}, userId}) => {
                     <div className="flex flex-row items-center gap-2">
                         <p onClick={goToUser}
                            className="text-white font-semibold cursor-pointer hover:underline">
-                            {data.user.name}
+                            {data.user.lastname + data.user.firstname}
                         </p>
                         <span onClick={goToUser}
                               className="text-neutral-500 cursor-pointer hover:underline hidden md:block">

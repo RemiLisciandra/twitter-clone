@@ -1,27 +1,26 @@
 import axios from "axios";
 import { useCallback, useMemo } from "react";
 import { toast } from "react-hot-toast";
-
 import useAuthUser from "./useUserAuth";
 import useLoginModal from "./useLoginModal";
 import usePost from "./usePost";
 import usePosts from "./usePosts";
 
 const useLike = ({ postId, userId }: { postId: string, userId?: string }) => {
-    const { data: currentUser } = useAuthUser();
-    const { data: fetchedPost, mutate: mutateFetchedPost } = usePost(postId);
-    const { mutate: mutateFetchedPosts } = usePosts(userId);
+    const { data: userAuth } = useAuthUser();
+    const { data: postFetched, mutate: mutatePostFetched } = usePost(postId);
+    const { mutate: mutatePostsFetched } = usePosts(userId);
 
     const loginModal = useLoginModal();
 
     const hasLiked = useMemo(() => {
-        const list = fetchedPost?.likedIds || [];
+        const list = postFetched?.likedIds || [];
 
-        return list.includes(currentUser?.id);
-    }, [fetchedPost, currentUser]);
+        return list.includes(userAuth?.id);
+    }, [postFetched, userAuth]);
 
     const toggleLike = useCallback(async () => {
-        if (!currentUser) {
+        if (!userAuth) {
             return loginModal.onOpen();
         }
 
@@ -35,12 +34,12 @@ const useLike = ({ postId, userId }: { postId: string, userId?: string }) => {
             }
 
             await request();
-            await mutateFetchedPost();
-            await mutateFetchedPosts();
+            await mutatePostFetched();
+            await mutatePostsFetched();
         } catch (error) {
             toast.error("Une erreur est survenue");
         }
-    }, [currentUser, hasLiked, postId, mutateFetchedPosts, mutateFetchedPost, loginModal]);
+    }, [userAuth, hasLiked, postId, mutatePostFetched, mutatePostsFetched, loginModal]);
 
     return {
         hasLiked,
