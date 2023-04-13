@@ -14,7 +14,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         const { userAuth } = await server(req, res);
 
         if (!userId || typeof userId !== 'string') {
-            throw new Error('Identifiants invalides');
+            return res.status(400).end();
         }
 
         const user = await prisma.user.findUnique({
@@ -24,7 +24,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         });
 
         if (!user) {
-            throw new Error('Identifiants invalides');
+            return res.status(400).end();
         }
 
         let updatedFollowingIds = [...(user.followingIds || [])];

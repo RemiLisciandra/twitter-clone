@@ -13,7 +13,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         const { userAuth } = await server(req, res);
 
         if (!postId || typeof postId !== 'string') {
-            throw new Error('Identifiants invalides');
+            return res.status(400).end();
         }
 
         const post = await prisma.post.findUnique({
@@ -23,7 +23,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         });
 
         if (!post) {
-            throw new Error('Identifiants invalides');
+            return res.status(400).end();
         }
 
         let updatedLikedIds = [...(post.likedIds || [])];

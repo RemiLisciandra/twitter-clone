@@ -10,7 +10,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         const { postId } = req.query;
 
         if (!postId || typeof postId !== 'string') {
-            throw new Error('Identifiants invalides');
+            return res.status(400).end();
         }
 
         const post = await prisma.post.findUnique({
