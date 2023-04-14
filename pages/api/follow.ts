@@ -1,5 +1,4 @@
 import { NextApiRequest, NextApiResponse } from "next";
-
 import prisma from '../../libs/prisma';
 import server from "../../libs/server";
 

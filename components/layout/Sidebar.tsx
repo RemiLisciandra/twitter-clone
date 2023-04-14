@@ -20,13 +20,14 @@ const Sidebar = () => {
             label: "Notifications",
             path: "/notifications",
             icon: BsBellFill,
-            auth: true
+            auth: true,
+            alert: true
         },
         {
             label: "Profil",
             path: `/utilisateurs/${userAuth?.id}`,
             icon: FaUser,
-            auth: true
+            auth: userAuth?.hasNotification
         },
     ];
 
@@ -42,6 +43,7 @@ const Sidebar = () => {
                             label={item.label}
                             icon={item.icon}
                             auth={item.auth}
+                            alert={item.alert}
                         />
                     ))}
                     {userAuth && <SidebarItem onClick={() => signOut()} icon={BiLogOut} label="Déconnexion" />}

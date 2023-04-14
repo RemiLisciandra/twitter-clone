@@ -5,26 +5,34 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     if (req.method !== 'GET') {
         return res.status(405).end();
     }
+
     try {
         const { userId } = req.query;
 
         if (!userId || typeof userId !== 'string') {
             return res.status(400).end();
         }
-        const userAuth = await prisma.user.findUnique({
+
+        const notifications = await prisma.notification.findMany({
             where: {
-                id: userId
+                userId,
+            },
+            orderBy: {
+                createdAt: 'desc'
             }
         });
-        const followersCount = await prisma.user.count({
+
+        await prisma.user.update({
             where: {
-                followingIds: {
-                    has: userId
-                }
+                id: userId
+            },
+            data: {
+                hasNotification: false,
             }
-        })
-        return res.status(200).json({ ...userAuth, followersCount });
+        });
+
+        return res.status(200).json(notifications);
     } catch (error) {
         return res.status(400).end();
     }
-};
+}
