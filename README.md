@@ -1,45 +1,45 @@
-<h2 style="color: orange">Clonage de twitter avec Next JS</h2>
+<h1>Clone Twitter with Next JS </h1>
 
-**Cloning the Repository**
+<h3>Cloning the Repository</h3>
 
-Using an HTTP request :
+<em>Using an HTTP request :</em>
 
 ```git clone https://github.com/RemiLisciandra/twitter-clone.git```
 
-Using SSH :
+<em>Using SSH :</em>
 
 ```git clone git@github.com:RemiLisciandra/twitter-clone.git```
 
-**Installing Dependencies**
+<h3>Installing Dependencies</h3>
 
 ```npm i```
 
-**Configuration de l'environnement**
+<h3>Environment Configuration</h3>
 
-Create a .env file at the root of the project and set the following environment variables :
+<em>Create a .env file at the root of the project and set the following environment variables : </em>
 
 ```DATABASE_URL="url"```
 
-Replace "your-database-url" with the URL of your database. You can also define other environment variables in this file if needed.
+<em>Replace "your-database-url" with the URL of your database. You can also define other environment variables in this file if needed.</em>
 
-**Déploiement de la base de données**
+<h3>Database deployment</h3>
 
-This project requires the use of MongoDB as the database.
+<em>This project requires the use of MongoDB as the database.</em>
 
-To create the database, run the following command in your terminal :
+<em>To create the database, run the following command in your terminal :</em>
 
 ```npx prisma db push```
 
-**Application Deployment**
+<h3>Application Deployment</h3>
 
-To deploy the application, you can use a deployment platform like Vercel, which supports Next.js projects. 
+<em>To deploy the application, you can use a deployment platform like Vercel, which supports Next.js projects.</em>
 
-Check Vercel's documentation for more information on deploying your Next.js application.
+<em>Check Vercel's documentation for more information on deploying your Next.js application.</em>
 
-**Starting the Application**
+<h3>Starting the Application</h3>
 
-To start the application, run the following command in your terminal:
+<em>To start the application, run the following command in your terminal :</em>
 
 ```npm run dev```
 
-This command starts the Next.js development server and opens the application in your default browser.
+<em>This command starts the Next.js development server and opens the application in your default browser.</em>
